@@ -55,13 +55,10 @@ export const options = {
     // }),
   ],
   callbacks: {
-    async session(session:any): Promise<any> {
-      console.log('SESsion = ', session);
+    async session({session}:any): Promise<any> {
       return session;
     },
     async signIn({ profile }:Profile): Promise<boolean> {
-      console.log('PROFILE + ', profile);
-      const email = profile.email
       try {
         connectDB();
         // look for user email in db
@@ -73,7 +70,7 @@ export const options = {
             name: profile.name,
             image: profile.picture,
           });
-          console.log('User = ', user);
+          // console.log('User = ', user);
         }
         return true;
       } catch (err) {
