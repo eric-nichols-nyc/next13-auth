@@ -44,7 +44,6 @@ export default function Card({ user, pagetype }: Props) {
             {/* {emailDisplay} */}
             {userImage}
             <p className="text-2xl text-center">{pagetype} Page!</p>
-            <p>CRAP</p>
         </section>
     )
 }
