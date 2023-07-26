@@ -1,10 +1,19 @@
 // import type { NextAuthOptions } from 'next-auth'
-import GitHubProvider from 'next-auth/providers/github'
+import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials'
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectDB } from '@/db/database';
 import User from '../../../models/user';
+import { Session } from 'next-auth';
 
+interface Profile {
+  profile: {
+  name: String,
+  email: String,
+  picture: String
+  }
+
+}
 export const options = {
   providers: [
     // GitHubProvider({
@@ -12,8 +21,8 @@ export const options = {
     //   clientSecret: process.env.GITHUB_SECRET,
     // }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
     // CredentialsProvider({
     //   name: 'Credentials',
@@ -47,29 +56,31 @@ export const options = {
     // }),
   ],
   callbacks: {
-    async session({session}){
-      return session
+    async session(session:any): Promise<any> {
+      console.log('SESsion = ', session);
+      return session;
     },
-    async signIn({profile}){
-      console.log(profile)
+    async signIn({ profile }:Profile): Promise<boolean> {
+      console.log('PROFILE + ', profile);
+      const email = profile.email
       try {
-        connectDB()
+        connectDB();
         // look for user email in db
-        const userExists = await User.findOne({email: profile.email})
+        const userExists = await User.findOne({ email: profile.email });
         // if no user create one
         if (!userExists) {
           const user = await User.create({
             email: profile.email,
             name: profile.name,
             image: profile.picture,
-          })
-          console.log('User = ', user)
+          });
+          console.log('User = ', user);
         }
         return true;
-      }catch(err){
+      } catch (err) {
         console.log(err);
         return false;
       }
-    }
-  }
+    },
+  },
 };
