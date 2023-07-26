@@ -12,7 +12,6 @@ interface Profile {
   email: String,
   picture: String
   }
-
 }
 export const options = {
   providers: [
