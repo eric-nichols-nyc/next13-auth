@@ -4,7 +4,6 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectDB } from '@/db/database';
 import User from '../../../models/user';
-import { Session } from 'next-auth';
 
 interface Profile {
   profile: {
