@@ -1,10 +1,11 @@
 import { options } from "./api/auth/[...nextauth]/options"
 import { getServerSession } from "next-auth/next"
 import UserCard from "./components/UserCard"
+import { connectDB } from "@/db/database"
 
 export default async function Home() {
   const session = await getServerSession(options)
-
+  const connect = connectDB()
   return (
     <>
       {session ? (
